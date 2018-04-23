@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WebAdminPanel.ViewModels.ModuleModel>
+
+@{
+    ViewBag.Title = "Modules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<br />
+<br />
+<div class="panel panel-primary" style="width:100%">
+    <div class="panel-heading">
+        <span style="font-size: 30px; font-style:oblique"><span style="font-size:larger;"><span style="margin-right: 5px" class="	glyphicon glyphicon-flash"></span>Modules in system:</span></span>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+      </div>
+    </div>
+
+    <table class="table table-striped table-hover table-responsive table-condensed">
+        <tr>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Internal Name</span></h3>
+            </th>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Visible Name</span></h3>
+            </th>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Value</span></h3>
+            </th>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Type</span></h3>
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.module.Name)</span>
+            </td>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.module.ExternalName)</span>
+            </td>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.StrVal)</span>
+            </td>
+            <td class="col-lg-2">
+                <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.Type)</span>
+            </td>
+            <td class="col-lg-3">
+                <button type="button" class="btn btn-info col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("ScheduleTimeBased", "Settings", new { deviceName = item.DeviceName, moduleName = item.module.Name })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Sched</button>
+            </td>
+        </tr>
+        }
+
+    </table>
+</div>

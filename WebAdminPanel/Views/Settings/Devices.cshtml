@@ -1,0 +1,95 @@
+﻿@model IEnumerable<WebAdminPanel.ViewModels.DeviceModel>
+
+@{
+    ViewBag.Title = "Devices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<br />
+<br />
+<div class="panel panel-primary" style="width:100%">
+    <div class="panel-heading">
+        <span style="font-size: 30px; font-style:oblique"><span style="font-size:larger;"><span style="margin-right: 5px" class="	glyphicon glyphicon-flash"></span>Devices in system:</span></span>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover table-responsive table-condensed">
+        <tr>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Internal Name</span></h3>
+            </th>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Visible Name</span></h3>
+            </th>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Last Sync Time</span></h3>
+            </th>
+            <th>
+                <h3 style="font-size:x-large"><span style="font-weight:bolder">Is Registered</span></h3>
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-lg-2">
+                    <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.DeviceInfo.Device.Name)</span>
+                </td>
+                @if (!item.EditShow)
+                {
+                    <td class="col-lg-2">
+                        <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.DeviceInfo.Device.ExternalName)</span>
+                    </td>
+                }
+                else
+                {
+                    <td class="col-lg-2">
+                        @using (Html.BeginForm("SaveName", "Settings", new { deviceName = item.DeviceInfo.Device.Name }, FormMethod.Post))
+                        {
+                            <input type="text" name="IP" id="IP" />
+                            <input type="submit" value="Save" />
+                        }
+                        <span style="font-size: 17px;"><asp:TextBox id="tb1" runat="server">@Html.DisplayFor(modelItem => item.DeviceInfo.Device.ExternalName)</asp:TextBox></span>
+
+                    </td>
+                }
+
+                <td class="col-lg-1">
+                    <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.DeviceInfo.Device.LastSync)</span>
+                </td>
+                <td class="col-lg-1">
+                    <span style="font-size: 17px;">@Html.DisplayFor(modelItem => item.DeviceInfo.Device.Registered)</span>
+                </td>
+                <td class="col-lg-3">
+                    @if (!item.EditShow)
+                    {
+                        <button type="button" class="btn btn-warning col-lg-3" onclick="location.href='@Url.Action("EditName", "Settings", new { deviceName = item.DeviceInfo.Device.Name })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-pencil"></span>Edit Name</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-warning col-lg-3" onclick="location.href='@Url.Action("SaveName", "Settings", FormMethod.Post)';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-save"></span>Save</button>
+                    }
+
+                    <button type="button" class="btn btn-info col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("Details", "Settings", new { deviceName = item.DeviceInfo.Device.Name })';return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-align-justify"></span>Details</button>
+
+                    <button type="button" class="btn btn-danger col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("DeleteDevice", "Settings", new { deviceName = item.DeviceInfo.Device.Name })' ;return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-trash"></span>Delete</button>
+                    @if (item.DeviceInfo.AwaitingRegistration)
+                    {
+                        <button type="button" class="btn btn-sm col-lg-3 col-lg-offset-1" onclick="location.href='@Url.Action("Register", "Settings", new { deviceName = item.DeviceInfo.Device.Name })' ;return false;"><span style="margin-right: 5px" class="glyphicon glyphicon-saved"></span>Register</button>
+                    }
+                </td>
+            </tr>
+            @if (item.DetailsShow)
+            {
+
+
+            }
+        }
+
+    </table>
+</div>
